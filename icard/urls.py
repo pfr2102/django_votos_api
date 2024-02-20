@@ -10,6 +10,7 @@ from users.api.router import router_user
 from rango.api.router import router_rango
 from etapa.api.router import router_Etapa
 from etapaRango.api.router import router_etapaRango
+from voto.api.router import router_voto
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -37,4 +38,5 @@ urlpatterns = [
     path('api/', include(router_rango.urls)),
     path('api/', include(router_Etapa.urls)),
     path('api/', include(router_etapaRango.urls)),
+    path('api/', include(router_voto.urls)),
 ]

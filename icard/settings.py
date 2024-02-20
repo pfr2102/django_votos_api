@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rango',
     'etapa',
     'etapaRango',
+    'voto',
 ]
 
 MIDDLEWARE = [
