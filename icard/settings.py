@@ -104,11 +104,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-REST_FRAMEWORK = {
+""" REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
-}
+} """
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -139,6 +139,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CARS_ALLOW_CREDENTIALS = True
 
 #es para decir cual sera el tiempo de vida del acces token que se va a crear cuando se autentique
-SIMPLE_JWT = {
+""" SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=120),
-}
+} """
