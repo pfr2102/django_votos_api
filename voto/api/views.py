@@ -79,3 +79,42 @@ class VotoApiViewSet(ModelViewSet):
 
 
         return Response(counts, status=status.HTTP_200_OK)
+
+    #Peticion para obtener el total de votos
+    @swagger_auto_schema(
+    manual_parameters=[
+        openapi.Parameter('id_etapa_fk', openapi.IN_QUERY, description="Número de etapa", type=openapi.TYPE_STRING),
+        openapi.Parameter('id_rango_fk', openapi.IN_QUERY, description="Número de rango", type=openapi.TYPE_STRING),
+        openapi.Parameter('fecha_voto', openapi.IN_QUERY, description="Fecha de voto (opcional)", type=openapi.TYPE_STRING, format='date'),
+    ],
+    responses={200: VotoSerializer(many=True)},
+    )
+    @action(detail=False, methods=['GET'])
+    def count_votesTop(self, request):
+        id_etapa_fk = request.query_params.get('id_etapa_fk')
+        id_rango_fk = request.query_params.get('id_rango_fk')
+        fecha_voto_str = request.query_params.get('fecha_voto')
+
+        filters = {'estatus_revocacion': False}
+
+        if id_etapa_fk:
+            filters['id_etapa_fk'] = id_etapa_fk
+
+        if id_rango_fk:
+            filters['id_rango_fk'] = id_rango_fk
+
+        if fecha_voto_str:
+            filters['fecha_voto__year'] = fecha_voto_str
+
+        counts = (
+            Voto.objects
+            .filter(**filters)
+            .values('id_etapa_fk', 'id_rango_fk', 'id_emp_candidato_fk' ) 
+            .annotate( full_name=Concat('id_emp_candidato_fk_first_name', Value(' '), 'id_emp_candidato_fk_last_name'), year=TruncYear('fecha_voto'), total=Count('id_voto'))  
+            .order_by('-total')
+        )[:6]
+
+
+        return Response(counts, status=status.HTTP_200_OK)
+
+
