@@ -19,6 +19,7 @@ class VotoApiViewSet(ModelViewSet):
     queryset = Voto.objects.all()
     serializer_class = VotoSerializer
 
+    #Peticion para crear votos de forma masiva
     @action(detail=False, methods=['POST'])
     def create_votosM(self, request, *args, **kwargs):
         # Utiliza el serializador VotoSerializer en lugar de VotoListSerializer
@@ -30,6 +31,7 @@ class VotoApiViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    #Peticion para obtener el total de votos
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter('id_etapa_fk', openapi.IN_QUERY, description="Número de etapa", type=openapi.TYPE_STRING),
@@ -58,8 +60,19 @@ class VotoApiViewSet(ModelViewSet):
         counts = (
             Voto.objects
             .filter(**filters)
-            .values('id_etapa_fk', 'id_rango_fk', 'id_emp_candidato_fk' ) 
-            .annotate( full_name=Concat('id_emp_candidato_fk__first_name', Value(' '), 'id_emp_candidato_fk__last_name'), year=TruncYear('fecha_voto'), total=Count('id_voto'))  
+            .values(
+                    'id_etapa_fk',
+                    'id_rango_fk', 
+                    'id_emp_candidato_fk', 
+                    image=F('id_emp_candidato_fk__image'), 
+                    workstation=F('id_emp_candidato_fk__workstation'),
+                    dependency=F('id_emp_candidato_fk__dependency') 
+                 ) 
+            .annotate( 
+                    full_name=Concat('id_emp_candidato_fk__first_name', Value(' '), 'id_emp_candidato_fk__last_name'),                 
+                    year=TruncYear('fecha_voto'), 
+                    total=Count('id_voto')
+                )   
             .order_by('-total')
         )
 

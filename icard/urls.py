@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
+#importaciones necesarias para el manejo de imagenes
+from django.conf import settings
+from django.conf.urls.static import static
 
+#importaciones de rest_framework
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -40,3 +44,6 @@ urlpatterns = [
     path('api/', include(router_etapaRango.urls)),
     path('api/', include(router_voto.urls)),
 ]
+
+#rutas para imagenes
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
