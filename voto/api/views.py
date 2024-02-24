@@ -66,7 +66,8 @@ class VotoApiViewSet(ModelViewSet):
                     'id_emp_candidato_fk', 
                     image=F('id_emp_candidato_fk__image'), 
                     workstation=F('id_emp_candidato_fk__workstation'),
-                    dependency=F('id_emp_candidato_fk__dependency') 
+                    dependency=F('id_emp_candidato_fk__dependency'),
+                    num_empleado=F('id_emp_candidato_fk__username') 
                  ) 
             .annotate( 
                     full_name=Concat('id_emp_candidato_fk__first_name', Value(' '), 'id_emp_candidato_fk__last_name'),                 
