@@ -6,7 +6,7 @@ from voto.api.serializers import VotoSerializer
 #Otras importaciones para las consultas
 from rest_framework.decorators import action
 from django.db.models import Count, F, Value
-from django.db.models.functions import Concat, TruncYear
+from django.db.models.functions import Concat, TruncYear, TruncDate
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
@@ -172,6 +172,61 @@ class VotoApiViewSet(ModelViewSet):
 
         return Response(counts, status=status.HTTP_200_OK)
 
+
+    
+#-------------------------------------------------------------------------------------------------------------------
+# Peticion para obtener todos los votos sin contabilizar por rango, etapa y fecha
+    @swagger_auto_schema(
+    manual_parameters=[
+        openapi.Parameter('id_etapa_fk', openapi.IN_QUERY, description="Número de etapa", type=openapi.TYPE_STRING),
+        openapi.Parameter('id_rango_fk', openapi.IN_QUERY, description="Número de rango", type=openapi.TYPE_STRING),
+        openapi.Parameter('fecha_voto', openapi.IN_QUERY, description="Año voto", type=openapi.TYPE_STRING, format='date'),
+    ],
+    responses={200: VotoSerializer(many=True)},
+    )
+    @action(detail=False, methods=['GET'])
+    def get_all_votes(self, request):
+        """
+        Obtiene todos los registros de votos sin contabilizar por rango, etapa y fecha.
+
+        ---
+        # Parámetros:
+        - id_etapa_fk: Número de etapa.
+        - id_rango_fk: Número de rango.
+        - fecha_voto: Fecha de voto en formato de año.
+        
+        # Retorna:
+        - una lista de todos los registros de votos sin contabilizar.
+        """
+        id_etapa_fk = request.query_params.get('id_etapa_fk')
+        id_rango_fk = request.query_params.get('id_rango_fk')
+        fecha_voto_str = request.query_params.get('fecha_voto')
+
+        filters = {'estatus_revocacion': False}
+
+        if id_etapa_fk:
+            filters['id_etapa_fk'] = id_etapa_fk
+
+        if id_rango_fk:
+            filters['id_rango_fk'] = id_rango_fk
+
+        if fecha_voto_str:
+            filters['fecha_voto__year'] = fecha_voto_str
+            
+        votes = (
+            Voto.objects
+            .filter(**filters)
+            .values(
+                'id_etapa_fk',
+                'id_rango_fk',
+                'id_emp_candidato_fk',
+                nombre_candidato=Concat('id_emp_candidato_fk__first_name' , Value(' '), 'id_emp_candidato_fk__last_name'),
+                fecha_voto_trunc=TruncDate('fecha_voto'),                                
+            )
+        )
+        
+        return Response(votes, status=status.HTTP_200_OK)
+
 #-------------------------------------------------------------------------------------------------------------------
     # Acción para verificar la existencia de registros con la fk, la etapa y el año proporcionados
     @swagger_auto_schema(
@@ -183,7 +238,7 @@ class VotoApiViewSet(ModelViewSet):
         responses={200: openapi.TYPE_BOOLEAN},  # Cambiado a openapi.TYPE_BOOLEAN
     )
     @action(detail=False, methods=['GET'])
-    def check_vote_existence(self, request):
+    def check_vote_exists(self, request):
         """
         Verifica la existencia de un voto basado en el número de empleado del votante, el número de etapa y el año de voto.
 
