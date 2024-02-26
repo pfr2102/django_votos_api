@@ -149,5 +149,4 @@ CARS_ALLOW_CREDENTIALS = True
 #es para decir cual sera el tiempo de vida del acces token que se va a crear cuando se autentique
 """ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=120),
-} 
- """
+}  """

@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
+from django.db import transaction
 
 #importaciones personales de nuestro proyecto
 from users.models import User
@@ -42,6 +43,34 @@ class UserApiViewSet(ModelViewSet):
             # Maneja la excepción de manera específica o general
             data = {"error": f"Error inesperado: {str(e)}"}
             return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    #INSERTAMOS UN METODO PARA CREAR VARIOS REGISTROS A LA VEZ 
+    @action(detail=False, methods=['POST'])
+    def create_usersM(self, request, *args, **kwargs):
+        """
+        Crea Usuarios de forma masiva.
+
+        Permite crear usuarios en grandes cantidades proporcionando una lista de datos de votos.
+        ---
+        # Parámetros
+        - Se espera una solicitud POST con una lista de objetos JSON  de los nuevos usuarios.
+        - Cada dato de usuario debe tener el formato requerido por el serializador UserSerializer.
+        """
+        # Utiliza el serializador VotoSerializer en lugar de VotoListSerializer
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        if serializer.is_valid():
+            try:
+                with transaction.atomic():
+                    # Itera sobre los datos y crea un objeto User para cada conjunto de datos
+                    for data in serializer.validated_data:
+                        User.objects.create(**data)
+            except Exception as e:
+                # Si ocurre un error, puedes manejarlo aquí, por ejemplo, devolviendo un error 500
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
 #creamos otra vista para obtener los datos del usuario que se autentica
