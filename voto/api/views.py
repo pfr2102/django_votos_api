@@ -5,7 +5,8 @@ from voto.api.serializers import VotoSerializer
 
 #Otras importaciones para las consultas
 from rest_framework.decorators import action
-from django.db.models import Count, F, Value
+from django.db import models
+from django.db.models import Count, F, Value, CharField, Func
 from django.db.models.functions import Concat, TruncYear, TruncDate
 from rest_framework.response import Response
 from rest_framework import status
@@ -72,6 +73,9 @@ class VotoApiViewSet(ModelViewSet):
         # Retorna:
         - una lista de la cantidad de votos por electo con información detallada de mayor a menor.
         """
+        # Obtener la URL base para concatenarlo con la url de la imagen
+        base_url = request.build_absolute_uri('/uploads/')
+
         id_etapa_fk = request.query_params.get('id_etapa_fk')
         id_rango_fk = request.query_params.get('id_rango_fk')
         fecha_voto_str = request.query_params.get('fecha_voto')
@@ -94,12 +98,12 @@ class VotoApiViewSet(ModelViewSet):
                     'id_etapa_fk',
                     'id_rango_fk', 
                     'id_emp_candidato_fk', 
-                    image=F('id_emp_candidato_fk__image'), 
                     workstation=F('id_emp_candidato_fk__workstation'),
                     dependency=F('id_emp_candidato_fk__dependency'),
                     num_empleado=F('id_emp_candidato_fk__username') 
                  ) 
             .annotate( 
+                    image=Concat( Value(base_url),'id_emp_candidato_fk__image',output_field=CharField() ), 
                     full_name=Concat('id_emp_candidato_fk__first_name', Value(' '), 'id_emp_candidato_fk__last_name'),                 
                     year=TruncYear('fecha_voto'), 
                     total=Count('id_voto')
@@ -135,6 +139,9 @@ class VotoApiViewSet(ModelViewSet):
         # Retorna:
         - Lista de votos con información detallada, ordenada por el total de votos de mayor a menor.
         """
+        # Obtener la URL base para concatenarlo con la url de la imagen
+        base_url = request.build_absolute_uri('/uploads/')
+
         id_etapa_fk = request.query_params.get('id_etapa_fk')
         id_rango_fk = request.query_params.get('id_rango_fk')
         fecha_voto_str = request.query_params.get('fecha_voto')
@@ -158,12 +165,13 @@ class VotoApiViewSet(ModelViewSet):
                     'id_etapa_fk',
                     'id_rango_fk', 
                     'id_emp_candidato_fk', 
-                    image=F('id_emp_candidato_fk__image'), 
+                    #image=F('id_emp_candidato_fk__image'), 
                     workstation=F('id_emp_candidato_fk__workstation'),
                     dependency=F('id_emp_candidato_fk__dependency'),
                     num_empleado=F('id_emp_candidato_fk__username') 
                  ) 
             .annotate( 
+                    image=Concat( Value(base_url),'id_emp_candidato_fk__image',output_field=CharField() ), 
                     full_name=Concat('id_emp_candidato_fk__first_name', Value(' '), 'id_emp_candidato_fk__last_name'),                 
                     year=TruncYear('fecha_voto'), 
                     total=Count('id_voto')
