@@ -63,6 +63,7 @@ class UserApiViewSet(ModelViewSet):
                 with transaction.atomic():
                     # Itera sobre los datos y crea un objeto User para cada conjunto de datos
                     for data in serializer.validated_data:
+                        data['password'] = make_password(data['password']) # Encripta la contraseña
                         User.objects.create(**data)
             except Exception as e:
                 # Si ocurre un error, puedes manejarlo aquí, por ejemplo, devolviendo un error 500
