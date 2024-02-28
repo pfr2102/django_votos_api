@@ -8,20 +8,34 @@ Para comenzar a trabajar en este proyecto en tu máquina local, sigue estos paso
 
 2. Crea un entorno virtual dentro de la misma carpeta donde clones este proyecto.
 
-    ```bash
+   ```bash
    python -m venv envs/Nombre_del_entorno
    .\envs\Nombre_del_entorno\Scripts\Activate
    pip install django
 
-2. Utiliza el siguiente comando para clonar el repositorio en tu máquina:
+   ```
+
+3. Utiliza el siguiente comando para clonar el repositorio en tu máquina:
 
    ```bash
    git clone https://github.com/pfr2102/django_votos_api.git
+   ```
 
 ## Instala dependencias del proyecto dentro del entorno virtual
 
     pip install -r requirements.txt
 
+## Crea las migraciones de los modelos y corre el proyecto (todo dentro del entorno virrual)
+
+    python manage.py makemigrations
+
+    python manage.py migrate
+
+    python manage.py runserver
+
+## Crea un Super Usuario para poder acceder al panel de administracion de django
+
+    python manage.py createsuperuser
 
 ## Push y Pull desde tu repositorio local
 
