@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-7z=9*rte2n(q=b#+7v!eh(*p*3hqy!go&zi)!(=40d-qgtalz8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.awsapprunner.com']
 
 
 # Application definition
@@ -57,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'icard.urls'
@@ -95,7 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'VOTOS_COMITE',
         'USER': 'postgres',
-        'PASSWORD': '2102',
+        'PASSWORD': 'root1',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -145,6 +147,15 @@ STATIC_URL = 'static/'
 #variables importantes para el trabajo de imagenes
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
