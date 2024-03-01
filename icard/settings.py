@@ -93,11 +93,11 @@ WSGI_APPLICATION = 'icard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'VOTOS_COMITE',
-        'USER': 'postgres',
-        'PASSWORD': '2102',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': 'bfrgjudw2momocvm6rai',
+        'USER': 'u5jx3yioyppnwelqkrgm',
+        'PASSWORD': 'xX9nJzntjKFzenReM9bedNNdKNXc4t',
+        'HOST': 'bfrgjudw2momocvm6rai-postgresql.services.clever-cloud.com',
+        'PORT': '50013',
     }
 }
 
