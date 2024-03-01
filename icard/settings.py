@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-7z=9*rte2n(q=b#+7v!eh(*p*3hqy!go&zi)!(=40d-qgtalz8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['3.75.158.163', '3.125.183.140', '35.157.117.28']
 
 
 # Application definition
@@ -160,4 +160,4 @@ CARS_ALLOW_CREDENTIALS = True
 #es para decir cual sera el tiempo de vida del acces token que se va a crear cuando se autentique
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=120),
-} 
+}
