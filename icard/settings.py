@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-7z=9*rte2n(q=b#+7v!eh(*p*3hqy!go&zi)!(=40d-qgtalz8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.75.158.163', '3.125.183.140', '35.157.117.28']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'icard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bfrgjudw2momocvm6rai',
-        'USER': 'u5jx3yioyppnwelqkrgm',
-        'PASSWORD': 'xX9nJzntjKFzenReM9bedNNdKNXc4t',
-        'HOST': 'bfrgjudw2momocvm6rai-postgresql.services.clever-cloud.com',
+        'NAME': 'bfahpxa0htlt6ic5q5x6',
+        'USER': 'ushuo5iqqlzbnqqwqvdz',
+        'PASSWORD': '4ubzbTy9w5mz2BZ19QkegCwClD92Nl',
+        'HOST': 'bfahpxa0htlt6ic5q5x6-postgresql.services.clever-cloud.com',
         'PORT': '50013',
     }
 }
