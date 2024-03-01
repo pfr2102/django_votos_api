@@ -6,5 +6,5 @@ from etapa.api.serializers import EtapaSerializer
 
 class EtapaApiViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Etapa.objects.all()
+    queryset = Etapa.objects.all().order_by('id')
     serializer_class = EtapaSerializer

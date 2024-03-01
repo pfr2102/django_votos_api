@@ -17,7 +17,7 @@ from users.api.serializers import UserSerializer
 class UserApiViewSet(ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = UserSerializer
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('id')
 
     #SOBRE-ESCRIBIMOS EL METODO CREATE DE LA SUPERCLASE DE LA QUE HEREDAMOS PARA QUE ENCRIPTE EL PASSWORD ANTES DE INSERTARLO EN LA BD
     def create(self, request, *args, **kwargs):

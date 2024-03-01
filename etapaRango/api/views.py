@@ -7,5 +7,5 @@ from etapaRango.api.serializers import EtapaRangoSerializer
 class EtapaRangoViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = EtapaRangoSerializer
-    queryset = EtapaRango.objects.all()
+    queryset = EtapaRango.objects.all().order_by('id')
 

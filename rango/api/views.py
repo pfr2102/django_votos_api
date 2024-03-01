@@ -6,5 +6,5 @@ from rango.api.serializers import RangoSerializer
 
 class RangoApiViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Rango.objects.all()
+    queryset = Rango.objects.all().order_by('id')
     serializer_class = RangoSerializer
