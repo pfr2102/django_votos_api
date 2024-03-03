@@ -155,7 +155,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 # nota: (users) se refiere a la aplicacion y (User) se refiere al modelo
 CORS_ORIGIN_ALLOW_ALL = True
-CARS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
+#CARS_ALLOW_CREDENTIALS = True
 
 #es para decir cual sera el tiempo de vida del acces token que se va a crear cuando se autentique
 SIMPLE_JWT = {

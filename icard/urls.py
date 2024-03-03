@@ -18,9 +18,9 @@ from voto.api.router import router_voto
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="iCard_ApiDoc",
+      title="ComiteEtica API",
       default_version='v1',
-      description="documentacion de la api icard",
+      description="documentacion de la api ComiteEtica",
       terms_of_service="https://pfr2102.github.io/PORTAFOLIO/",
       contact=openapi.Contact(email="pfrs2102@gmail.com"),
       license=openapi.License(name="BSD License"),

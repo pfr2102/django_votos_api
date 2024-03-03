@@ -1,23 +1,24 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from voto.models import Voto
 from voto.api.serializers import VotoSerializer
 
 #Otras importaciones para las consultas
 from rest_framework.decorators import action
 from django.db import models
-from django.db.models import Count, F, Value, CharField, Func
+from django.db.models import Count, F, Value, CharField
 from django.db.models.functions import Concat, TruncYear, TruncDate
 from rest_framework.response import Response
 from rest_framework import status
-from datetime import datetime
 from django.utils import timezone
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 
 class VotoApiViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    #para usar todas las funcionalidades de esta view en todas las rutas se necesita mandar el
+    # token de autenticación en el header la de solicitud http
+    permission_classes = [IsAuthenticated] #es por eso que se indica el IsAuthenticated
     queryset = Voto.objects.all()
     serializer_class = VotoSerializer
 
