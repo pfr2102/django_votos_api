@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-7z=9*rte2n(q=b#+7v!eh(*p*3hqy!go&zi)!(=40d-qgtalz8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -49,9 +49,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -155,7 +155,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 # nota: (users) se refiere a la aplicacion y (User) se refiere al modelo
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
+CARS_ALLOW_CREDENTIALS = True
 #CARS_ALLOW_CREDENTIALS = True
 
 #es para decir cual sera el tiempo de vida del acces token que se va a crear cuando se autentique
