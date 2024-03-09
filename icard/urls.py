@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.http import HttpResponse
 #importaciones necesarias para el manejo de imagenes
 from django.conf import settings
 from django.conf.urls.static import static
@@ -30,6 +31,10 @@ schema_view = get_schema_view(
 )
 
 
+# Define la vista para la URL raíz
+def index(request):
+    return HttpResponse("OK 200", status=200)
+
 urlpatterns = [
     #rutas globales de django
     path('admin/', admin.site.urls),
@@ -43,6 +48,7 @@ urlpatterns = [
     path('api/', include(router_Etapa.urls)),
     path('api/', include(router_etapaRango.urls)),
     path('api/', include(router_voto.urls)),
+    path('', index),  # Ruta para la URL raíz
 ]
 
 #rutas para imagenes
